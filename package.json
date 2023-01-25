@@ -4,13 +4,13 @@
   "description": "a simple library to interact with Amino app API",
   "main": "index.js",
   "scripts": {
-    "test": "node tests/test.js"
+    "test_login": "node tests/test_login.js",
+    "test_getComs": "node tests/test_getJoinedCommunities.js"
   },
   "type": "module",
   "author": "@fixmybugs",
   "license": "ISC",
   "dependencies": {
-    "axios": "^1.2.3",
     "isomorphic-fetch": "^3.0.0",
     "node-fetch": "^3.3.0",
     "path": "^0.12.7"

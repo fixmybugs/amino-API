@@ -3,7 +3,7 @@ let prefix = 'https://service.narvii.com/api';
 export default  {
     login: prefix + '/v1/g/s/auth/login',
     getMe: prefix + '/v1/g/s/account',
-    getComs: prefix + '/v1/g/s/community/joined?start=0&size=50',
+    getJoinedComs: (size)=> `${prefix}/v1/g/s/community/joined?start=0&size=${size}`,
     upload: prefix + '/v1/g/s/media/upload',
     linkResolution: (q) => `${prefix}/v1/g/s/link-resolution?q=${q}`,
     getJoinedChats: (com) => `${prefix}/v1/${com}/s/chat/thread?&type=joined-me&start=0&size=60`,

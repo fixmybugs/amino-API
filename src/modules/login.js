@@ -8,6 +8,7 @@ import configHeaders from '../helpers/headers.js';
 export default async function login(email, password) {
 
     let headers = configHeaders.getHeaders()
+    let loginHeaders = JSON.parse(JSON.stringify(headers)); //just cloning headers object base 
     const __deviceID = deviceIdGenerator();
 
     let body = {
@@ -20,22 +21,24 @@ export default async function login(email, password) {
         "timestamp": Date.now()
     };
 
-    headers["NDC-MSG-SIG"] = signature(JSON.stringify(body));
-    headers["NDCDEVICEID"] = __deviceID;
-    headers["Content-Length"] = JSON.stringify(body).length;
+    loginHeaders["NDC-MSG-SIG"] = signature(JSON.stringify(body));
+    loginHeaders["NDCDEVICEID"] = __deviceID;
+    loginHeaders["Content-Length"] = JSON.stringify(body).length;
 
     try {
 
         const response = await fetch(endpoints.login, {
             method: 'post',
             body: JSON.stringify(body),
-            headers: headers
+            headers: loginHeaders
         });
         const data = await response.json();
         headers["NDCAUTH"] = `sid=${data.sid}`
-        console.log(headers.NDCAUTH);
+        headers["NDCDEVICEID"] = __deviceID;
+        //console.log(data);
         return {
-            _headers: headers
+            headers: headers,
+            accountData: data
         }
 
     } catch (error) {
