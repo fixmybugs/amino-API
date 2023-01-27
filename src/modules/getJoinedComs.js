@@ -2,17 +2,21 @@ import fetch from 'node-fetch';
 import endpoints from '../helpers/endpoints.js';
 
 export default async function getJoinedCommunities(size=50, headers) {
-
-    console.log("current headers => ", headers);
+    
+    if(typeof size != 'number' || typeof headers != 'object'){
+        throw new Error("size must be a number and headers must be an object");
+    }
+    
+    let comHeaders = headers;
 
   try {
 
         const response = await fetch(endpoints.getJoinedComs(size), {
             method: 'get',
-            headers: headers
+            headers: comHeaders
         });
         const data = await response.json();
-        console.log(data);
+        return data.communityList;
     
     } catch (error) {
         console.error("vete alv something bad happen !!", error);

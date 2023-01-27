@@ -6,7 +6,7 @@ export default  {
     getJoinedComs: (size)=> `${prefix}/v1/g/s/community/joined?start=0&size=${size}`,
     upload: prefix + '/v1/g/s/media/upload',
     linkResolution: (q) => `${prefix}/v1/g/s/link-resolution?q=${q}`,
-    getJoinedChats: (com) => `${prefix}/v1/${com}/s/chat/thread?&type=joined-me&start=0&size=60`,
+    getJoinedChats: (com, size) => `${prefix}/v1/x${com}/s/chat/thread?&type=joined-me&start=0&size=${size}`,
     loadChat: (com, uuid, count) => `${prefix}/v1/${com}/s/chat/thread/${uuid}/message?start=0&size=${count}&cv=v1.2`,
     loadChatTwo: (com, uuid, count) => `${prefix}/v1/${com}/s/chat/thread/${uuid}/message?start=100&size=${count}&cv=v1.2`,
     postBlog: (com) => `${prefix}/v1/${com}/s/blog/`,

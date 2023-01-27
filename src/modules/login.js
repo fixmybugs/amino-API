@@ -7,6 +7,10 @@ import configHeaders from '../helpers/headers.js';
 
 export default async function login(email, password) {
 
+    if(typeof email != 'string' || typeof password != 'string'){
+        throw new Error("email and password must be a string");
+    }
+
     let headers = configHeaders.getHeaders()
     let loginHeaders = JSON.parse(JSON.stringify(headers)); //just cloning headers object base 
     const __deviceID = deviceIdGenerator();
@@ -38,12 +42,15 @@ export default async function login(email, password) {
         //console.log(data);
         return {
             headers: headers,
-            accountData: data
+            accountData: data,
+            success: true
         }
 
     } catch (error) {
         console.error("vete alv something bad happen !!", error);
     }
 
-
 }
+
+
+
