@@ -1,34 +1,51 @@
-import eventEmitter from 'events';
 
 //loading modules
 import login from './src/modules/login.js';
 import getJoinedCommunities from './src/modules/getJoinedComs.js';
 import getJoinedChats from './src/modules/getJoinedChats.js';
 
-class aminoClient extends eventEmitter {
-    constructor(){
-        super();
+class aminoClient{
+    constructor() {
         this.headers;
 
     }
-    async login(email, pass){
+
+    async login(email, pass) {
         let response = await login(email, pass);
-        if(!response.success){
+        if (!response.success) {
             console.error("something bad happen");
         }
         this.headers = response.headers;
     }
 
-    async getJoinedComs(){
-        let response = await getJoinedCommunities(50, this.headers);
+    async getJoinedComs({size, resume}) {
+        
+        let getCommunitiesParams = {
+       
+            size: size, 
+            resume: resume, 
+            headers: this.headers
+        }
+
+        let communities = await getJoinedCommunities(getCommunitiesParams);
+        return communities;
+    }
+
+    async getJoinedChats({communityId, size, resume}) {
+
+        let getJoinedChatsParams = { 
+            
+            communityId: communityId, 
+            size: size, 
+            resume: resume, 
+            headers: this.headers 
+        }
+
+        let response = await getJoinedChats(getJoinedChatsParams);
         return response;
     }
 
-    async getJoinedChats(communityId){
-        let response = await getJoinedChats(this.headers, communityId, 50);
-        return response;
-    }
-    
 }
 
-export default aminoClient;
+export default aminoClient; 
+ 
