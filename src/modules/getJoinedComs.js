@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import endpoints from '../helpers/endpoints.js';
+import endpoints from './helpers/endpoints.js';
 import resumeData from './summarizers/joinedComsResume.js'
 
 export default async function getJoinedCommunities({ size = 50, resume = true, headers }) {

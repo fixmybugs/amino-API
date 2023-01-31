@@ -5,7 +5,7 @@ import getJoinedCommunities from './src/modules/getJoinedComs.js';
 import getJoinedChats from './src/modules/getJoinedChats.js';
 
 class aminoClient {
-    
+
     constructor() {
         this.headers;
 
@@ -32,7 +32,7 @@ class aminoClient {
         return communities;
     }
 
-    async getJoinedChats({ communityId, size, resume }) {
+    async getJoinedChats({size, resume, communityId }) {
 
         let getJoinedChatsParams = {
 

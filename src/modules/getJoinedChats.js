@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
-import endpoints from '../helpers/endpoints.js';
+import endpoints from './helpers/endpoints.js';
+import resumeChatListData from './summarizers/joinedChatResume.js';
 
-export default async function getJoinedChats({size = 50, communityId,  formatted = true, headers}) {
+export default async function getJoinedChats({size = 50, communityId,  resume = true, headers}) {
 
-    console.log('current size in getJoinedChats ', size);
     if (typeof communityId != 'number' || typeof size != 'number' || typeof headers != 'object') {
         throw new Error('All Arguments are not satisfied.');
     }
@@ -15,7 +15,11 @@ export default async function getJoinedChats({size = 50, communityId,  formatted
             headers: headers
         });
         const data = await response.json();
-        return data;
+        if(resume){
+
+            return resumeChatListData({data: data.threadList});
+        }
+        return data.threadList;
 
     } catch (error) {
         console.error("vete alv something bad happen !!", error);

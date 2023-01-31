@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
-import endpoints from '../helpers/endpoints.js';
-import deviceIdGenerator from '../helpers/deviceIdGenerator.js';
-import signature from '../helpers/signature.js'
-import configHeaders from '../helpers/headers.js';
+import endpoints from './helpers/endpoints.js';
+import deviceIdGenerator from './helpers/deviceIdGenerator.js';
+import signature from './helpers/signature.js'
+import configHeaders from './helpers/headers.js';
 
 
 export default async function login(email, password) {
