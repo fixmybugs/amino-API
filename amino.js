@@ -4,7 +4,8 @@ import login from './src/modules/login.js';
 import getJoinedCommunities from './src/modules/getJoinedComs.js';
 import getJoinedChats from './src/modules/getJoinedChats.js';
 
-class aminoClient{
+class aminoClient {
+    
     constructor() {
         this.headers;
 
@@ -18,12 +19,12 @@ class aminoClient{
         this.headers = response.headers;
     }
 
-    async getJoinedComs({size, resume}) {
-        
+    async getJoinedComs({ size, resume }) {
+
         let getCommunitiesParams = {
-       
-            size: size, 
-            resume: resume, 
+
+            size: size,
+            resume: resume,
             headers: this.headers
         }
 
@@ -31,14 +32,14 @@ class aminoClient{
         return communities;
     }
 
-    async getJoinedChats({communityId, size, resume}) {
+    async getJoinedChats({ communityId, size, resume }) {
 
-        let getJoinedChatsParams = { 
-            
-            communityId: communityId, 
-            size: size, 
-            resume: resume, 
-            headers: this.headers 
+        let getJoinedChatsParams = {
+
+            communityId: communityId,
+            size: size,
+            resume: resume,
+            headers: this.headers
         }
 
         let response = await getJoinedChats(getJoinedChatsParams);
@@ -47,5 +48,4 @@ class aminoClient{
 
 }
 
-export default aminoClient; 
- 
+export default aminoClient;
