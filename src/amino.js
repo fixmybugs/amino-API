@@ -1,25 +1,23 @@
-
-//loading modules
-import login from './src/modules/login.js';
-import getJoinedCommunities from './src/modules/getJoinedComs.js';
-import getJoinedChats from './src/modules/getJoinedChats.js';
+import login from './modules/login.js';
+import getJoinedCommunities from './modules/getJoinedComs.js';
+import getJoinedChats from './modules/getJoinedChats.js';
 
 class aminoClient {
 
-    constructor() {
+    constructor({email, password}) {
         this.headers;
-
+        this.email = email;
+        this.password = password;
+        this.myAccountInfo;
     }
 
-    async login(email, pass) {
-        let response = await login(email, pass);
-        if (!response.success) {
-            console.error("something bad happen");
-        }
+    async login() {
+        let response = await login(this.email, this.password);
         this.headers = response.headers;
+        this.myAccountInfo = response.data;
     }
 
-    async getJoinedComs({ size, resume }) {
+    async getJoinedCommunities({ size, resume}) {
 
         let getCommunitiesParams = {
 
@@ -27,7 +25,7 @@ class aminoClient {
             resume: resume,
             headers: this.headers
         }
-
+        
         let communities = await getJoinedCommunities(getCommunitiesParams);
         return communities;
     }

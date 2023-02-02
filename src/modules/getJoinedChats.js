@@ -4,6 +4,8 @@ import resumeChatListData from './summarizers/joinedChatResume.js';
 
 export default async function getJoinedChats({size = 50, communityId,  resume = true, headers}) {
 
+    if(!communityId) throw new Error('communityId required');
+
     if (typeof communityId != 'number' || typeof size != 'number' || typeof headers != 'object') {
         throw new Error('All Arguments are not satisfied.');
     }
