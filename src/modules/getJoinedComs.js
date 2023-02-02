@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import endpoints from './helpers/endpoints.js';
 import resumeData from './summarizers/joinedComsResume.js'
+import checkForExeptions from './exceptions/checkForExceptions.js';
 
 export default async function getJoinedCommunities({ size = 50, resume = true, headers }) {
 
@@ -17,12 +18,12 @@ export default async function getJoinedCommunities({ size = 50, resume = true, h
             headers: comHeaders
         });
         
-        const responseData = await response.json();
-        
+        const data = await response.json();
+        checkForExeptions(data)
         if(resume){
-            return resumeData({data: responseData.communityList});
+            return resumeData({data: data.communityList});
         }
-        return responseData.communityList;
+        return data.communityList;
 
 
     } catch (error) {
