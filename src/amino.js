@@ -1,10 +1,13 @@
 import login from './modules/login.js';
 import getJoinedCommunities from './modules/getJoinedComs.js';
 import getJoinedChats from './modules/getJoinedChats.js';
+import sendMessage from './modules/sendMessage.js';
 
 class aminoClient {
 
     constructor({email, password}) {
+
+        this.loginStatus=false;
         this.headers;
         this.email = email;
         this.password = password;
@@ -12,12 +15,16 @@ class aminoClient {
     }
 
     async login() {
+
         let response = await login(this.email, this.password);
         this.headers = response.headers;
         this.myAccountInfo = response.data;
+        this.loginStatus = true;
     }
 
     async getJoinedCommunities({ size, resume}) {
+
+        if(!this.loginStatus) throw new Error('you need to login first');
 
         let getCommunitiesParams = {
 
@@ -31,6 +38,7 @@ class aminoClient {
     }
 
     async getJoinedChats({size, resume, communityId }) {
+        if(!this.loginStatus) throw new Error('you need to login first');
 
         let getJoinedChatsParams = {
 
@@ -42,6 +50,12 @@ class aminoClient {
 
         let response = await getJoinedChats(getJoinedChatsParams);
         return response;
+    }
+
+    async sendMessage({message, chatId, communityId}){
+        if(!this.loginStatus) throw new Error('you need to login first');
+        await sendMessage({message: message, chatId, communityId, headers: this.headers})
+
     }
 
 }

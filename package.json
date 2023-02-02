@@ -6,13 +6,16 @@
   "scripts": {
     "test_login": "node tests/test_login.js",
     "test_getComs": "node tests/test_getJoinedCommunities.js",
-    "test_getChats": "node tests/test_getJoinedChats.js"
+    "test_getChats": "node tests/test_getJoinedChats.js",
+    "test_sendMsg": "node tests/test_sendMsg.js"
   },
   "type": "module",
   "author": "@fixmybugs",
   "license": "ISC",
   "dependencies": {
+    "mime-types": "^2.1.35",
     "node-fetch": "^3.3.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "uuid": "^9.0.0"
   }
 }

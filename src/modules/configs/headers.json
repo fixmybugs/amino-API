@@ -2,8 +2,8 @@
     "NDCLANG": "es",
     "Accept-Language": "en-US",
     "Content-Type": "application/json; charset=utf-8",
-    "User-Agent": "Dalvik/2.1.0 (Linux; U; Android 10; Redmi Note 9 Pro Build/QQ3A.200805.001; com.narvii.amino.master/3.5.34893)",
+    "User-Agent": "'Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/fixmybugs 7.1.; com.narvii.amino.master/3.4.33602)'",
     "Host": "service.aminoapps.com",
-    "Connection": "Keep-Alive",
+    "Connection": "Upgrade",
     "Accept-Encoding": "gzip"
 }

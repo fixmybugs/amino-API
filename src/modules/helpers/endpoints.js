@@ -13,7 +13,7 @@ export default  {
     deleteBlog: (com, id) => `${prefix}/v1/${com}/s/blog/${id}`,
     commentsPost: (com, id, sort, start, size) => `${prefix}/v1/${com}/s/blog/${id}/comment?sort=${sort}&start=${start}&size=${size}`,
     commentPost: (com, id) => `${prefix}/v1/${com}/s/blog/${id}/comment`,
-    sendChat: (com, uuid) => `${prefix}/v1/${com}/s/chat/thread/${uuid}/message`,
+    sendChat: (com, uuid) => `${prefix}/v1/x${com}/s/chat/thread/${uuid}/message`,
     getUserBlogs: (com, uuid, count) => `${prefix}/v1/${com}/s/blog?type=user&q=${uuid}&start=0&size=${count}`,
     getCommunityBlogFeed: (com, startAt, size) => `${prefix}/v1/${com}/s/feed/blog-all?start=${startAt}&size=${size}`,
     checkIfWikiCanPost: (com, uuid) => `${prefix}/v1/${com}/s/user-profile/${uuid}/compose-eligible-check?objectType=item`,
