@@ -3,6 +3,7 @@ import endpoints from './helpers/endpoints.js';
 import deviceIdGenerator from './helpers/deviceIdGenerator.js';
 import signature from './helpers/signature.js'
 import configHeaders from './helpers/headers.js';
+import checkForExeptions from './exceptions/checkForExceptions.js';
 
 
 export default async function login(email, password) {
@@ -37,13 +38,13 @@ export default async function login(email, password) {
             headers: loginHeaders
         });
         const data = await response.json();
+        checkForExeptions(data);
         headers["NDCAUTH"] = `sid=${data.sid}`
         headers["NDCDEVICEID"] = __deviceID;
         //console.log(data);
         return {
             headers: headers,
             accountData: data,
-            success: true
         }
 
     } catch (error) {
