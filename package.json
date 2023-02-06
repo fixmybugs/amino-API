@@ -7,7 +7,8 @@
     "test_login": "node tests/test_login.js",
     "test_getComs": "node tests/test_getJoinedCommunities.js",
     "test_getChats": "node tests/test_getJoinedChats.js",
-    "test_sendMsg": "node tests/test_sendMsg.js"
+    "test_sendMsg": "node tests/test_sendMsg.js",
+    "test_ws": "node tests/test_ws.js"
   },
   "type": "module",
   "author": "@fixmybugs",
