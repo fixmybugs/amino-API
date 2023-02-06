@@ -3,6 +3,7 @@ let prefix = 'https://service.narvii.com/api';
 export default  {
     login: prefix + '/v1/g/s/auth/login',
     getMe: prefix + '/v1/g/s/account',
+    webSocket: (signbody) => `'wss://ws1.narvii.com/?signbody=${signbody}`,
     getJoinedComs: (size)=> `${prefix}/v1/g/s/community/joined?start=0&size=${size}`,
     upload: prefix + '/v1/g/s/media/upload',
     linkResolution: (q) => `${prefix}/v1/g/s/link-resolution?q=${q}`,
@@ -22,7 +23,6 @@ export default  {
     commentWiki: (com, uid) => `${prefix}/v1/${com}/s/item/${uid}/comment`,
     visitProfile: (com, uid) => `${prefix}/v1/${com}/s/user-profile/${uid}?action=visit`,
     commentUser: (com, uid) => `${prefix}/v1/${com}/s/user-profile/${uid}/comment`,
-    getMeme: (text0, text1, user, pass, img_id) => `https://api.imgflip.com/caption_image?text0=${text0}&text1=${text1}&template_id=${img_id}&username=${user}&password=${pass}`,
     joinChat: (community, chatId, userId) => `https://service.narvii.com/api/v1/${community}/s/chat/thread/${chatId}/member/${userId}`,
     leaveChat: (com, chatId, userId) => `https://service.narvii.com/api/v1/${com}/s/chat/thread/${chatId}/member/${userId}`,
     deleteMsg: (com, chat, msg) => `${prefix}/v1/${com}/s/chat/thread/${chat}/message/${msg}`,

@@ -17,7 +17,7 @@ export default async function getJoinedCommunities({ size = 50, resume = true, h
             method: 'get',
             headers: comHeaders
         });
-        
+    
         const data = await response.json();
         checkForExeptions(data)
         if(resume){

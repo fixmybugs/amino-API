@@ -17,14 +17,14 @@ export default async function getJoinedChats({size = 50, communityId,  resume = 
             method: 'get',
             headers: headers
         });
+
         const data = await response.json();
-        
         checkForExeptions(data);
 
         if(resume){
-
             return resumeChatListData({data: data.threadList});
         }
+        
         return data.threadList;
 
     } catch (error) {

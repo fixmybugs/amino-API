@@ -29,17 +29,17 @@ export default async function sendMessage({
         "timestamp": Date.now()
     }
 
-    //sendMessageHeaders["AUID"] = uuidv4();
+    //sendMessageHeaders["AUID"] = uuidv4(); 
     //sendMessageHeaders["SMDEVICEID"] = uuidv4();
     sendMessageHeaders["NDC-MSG-SIG"] = signature(JSON.stringify(body));
     sendMessageHeaders["Content-Length"] = JSON.stringify(body).length;
 
 
-    console.log(sendMessageHeaders);
-    console.log(body);
+    //console.log(sendMessageHeaders);
+   // console.log(body);
 
     try {
-        console.log(endpoints.sendChat(communityId, chatId))
+        
         const response = await fetch(endpoints.sendChat(communityId, chatId), {
             method: 'post',
             body: JSON.stringify(body),

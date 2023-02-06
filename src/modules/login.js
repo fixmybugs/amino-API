@@ -37,6 +37,7 @@ export default async function login(email, password) {
             body: JSON.stringify(body),
             headers: loginHeaders
         });
+
         const data = await response.json();
         checkForExeptions(data);
         headers["NDCAUTH"] = `sid=${data.sid}`

@@ -7,16 +7,10 @@ export default function getJoinedChatResume({data}){
 
     let resumeOfChats = data.map((chat)=>{
 
-        let type = '';
-        switch(chat.type){
-            case 0: type = 'DM';
-            break;
-
-            case 1: type = 'private';
-            break;
-            
-            case 2: type = 'public';
-            break;
+        let typeOfChat = {
+            0: 'DM',
+            1: 'private',
+            2: 'public'
         }
 
         return {
@@ -26,7 +20,7 @@ export default function getJoinedChatResume({data}){
             membersCount: chat.membersCount,
             joined: chat.membershipStatus == 1 ? true : false,
             description: chat.content,
-            type: type,
+            type: typeOfChat[chat.type],
             icon: chat.icon,
             author: chat.author,
             communityId: chat.ndcId
