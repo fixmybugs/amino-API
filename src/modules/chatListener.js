@@ -1,156 +1,136 @@
 
 import WebSocket from 'ws';
-import EventEmitter from 'events';
+import eventEmitter from 'events';
 import endpoints from './helpers/endpoints.js';
 import signature from './helpers/signature.js';
 
 
 export default class aminoSocket extends eventEmitter {
+
     constructor(headers) {
         super();
-        this.webSocketOne;
+        this.firstWebSocket;
+        this.secondWebSocket;
+        this.loopId;
         this.headers = JSON.parse(JSON.stringify(headers));
     }
 
-    startOne() {
+    openFirstSocket() {
 
-        let signbody = `${headers.deviceID}|${Date.now()}`;
+        let signbody = `${this.headers['NDCDEVICEID']}|${Date.now()}`;
+        let finalSignBody = `${signbody.replace('|', '%7C')}`
+
+        this.headers['NDC-MSG-SIG'] = signature(signbody);
+
+
+        try {
+
+            this.firstWebSocket = new WebSocket(endpoints.webSocket(finalSignBody), {
+                headers: this.headers
+            });
+/*
+            this.firstWebSocket.on("open", () => {
+                console.log("Amino Socket one open!");
+            })
+
+            this.firstWebSocket.on("close", () => {
+                console.log("Amino Socket one closed!");
+            })
+*/
+            this.firstWebSocket.on("message", (msg) => {
+                const message = JSON.parse(msg);
+                 if (message.t === 1000) {
+                     this.emit('rawMsg', message.o.chatMessage);
+                    // console.log(message);
+                 }
+            });
+
+            return this.firstWebSocket;
+
+        } catch (error) {
+            console.error('Fck!!! Error in webSocket => ', error);
+        }
+
+    }
+
+    closeFirstSocket() {
+        this.firstWebSocket.close(1000);
+    }
+
+    openSecondSocket() {
+
+        let signbody = `${this.headers['NDCDEVICEID']}|${Date.now()}`;
         let finalSignBody = `${signbody.replace('|', '%7C')}`
 
         this.headers['NDC-MSG-SIG'] = signature(signbody);
 
         try {
-            console.log(this.headers);
-            this.webSocketOne = new WebSocket(endpoints.webSocket(finalSignBody), {
+
+            this.secondWebSocket = new WebSocket(endpoints.webSocket(finalSignBody), {
                 headers: this.headers
             });
-
-            this.pingerOne = setInterval(() => {
-                this.webSocketOne.ping();
-            }, 15000);
-
-            this.wsc.on("open", () => {
-                console.log("Amino SocketOne started :^)");
-            })
-
-            this.wsc.on("close", () => {
-                console.log("socketOne cerrado correctamente");
-            })
-
-            this.wsc.on("message", (msg) => {
-                const message = JSON.parse(msg);
-                if (message.t === 1000) {
-                    this.emit('rawMsg', message.o.chatMessage);
-                    console.log(message);
-                }
-            });
-
-            return this.wsc;
-
-        } catch (error) {
-            throw new Error('Fck!!! Error in webSocket => ', error );
-        }
-
-    }
 /*
-    closeOne() {
-        clearInterval(this.pingerOne);
-        this.wsc.close();
-    }
-
-    startTwo() {
-
-        try {
-            this.wscTwo = new WebSocket(`wss://ws4.narvii.com/`, {
-
-                //headers: headers
-                headers: {
-                    'Accept-Encoding': 'gzip',
-                    "Accept-Language": "en-US",
-                    "Connection": "Keep-Alive",
-                    "Content-Type": "application/json; charset=utf-8",
-                    'Upgrade': 'websocket',
-                    'Host': 'ws4.narvii.com',
-                    'user-agent': userAgent,
-                    'NDCDEVICEID': deviceID,
-                    'NDCAUTH': `sid=${this.sid}`,
-                    'AUID': this.uuid,
-                    "NDC-MSG-SIG": sig
-                }
-            });
-
-            this.pingerTwo = setInterval(() => {
-                this.wscTwo.ping('ping');
-            }, 15000);
-
-            this.wscTwo.on("open", () => {
-                console.log("Amino SocketTwo started :^)");
+            this.secondWebSocket.on("open", () => {
+                console.log("Amino socket two open!");        
             })
 
-            this.wscTwo.on("close", () => {
-                console.log("socketTwo cerrado correctamente");
+            this.secondWebSocket.on("close", () => {
+                console.log("Amino socket two closed!");
             })
-
-            this.wscTwo.on("message", (msg) => {
-
+*/
+            this.secondWebSocket.on("message", (msg) => {
                 const message = JSON.parse(msg);
-
                 if (message.t === 1000) {
-                    this.emit('rawMsg', message.o.chatMessage);
-                }
+                     this.emit('rawMsg', message.o.chatMessage);
+//console.log(message);
+                 }
             });
 
-            return this.wscTwo;
+            return this.secondWebSocket;
+
         } catch (error) {
-            console.log('Error al intentar abrir ws en wsTwo', error);
-            this.startTwo();
+            console.error('Fck!!! Error in webSocket 2 => ', error);
         }
 
     }
 
-
-    closeTwo() {
-        clearInterval(this.pingerTwo);
-        this.wscTwo.close();
+    closeSecondSocket() {
+        this.secondWebSocket.close(1000);
     }
 
-    startListen() {
+    async startListen(){
+        
+        let socketChanger = true;
+        let timeToChangeBetweenSockets = 360000;
         let that = this;
+        this.openFirstSocket();
+        this.loopId = setInterval(()=>{  
+        
+            if(socketChanger){
+                console.log("pasé por aquí mijin step01 ");
+                that.openSecondSocket();
+                socketChanger = false;
+                setTimeout(()=>{
+                    console.log("cerré el primer socket despues de 8 segundos step02");
+                    that.closeFirstSocket();
+                }, 8000);
 
-        this.on('rawMsg', (rawMessage) => {
-            if (that.queue.includes(rawMessage.messageId)) {
-                return;
+            }else{
+                console.log("el estado de socketChanger es: ", socketChanger);
+                that.openFirstSocket();
+                socketChanger = true;
+                setTimeout(()=>{
+                    that.closeSecondSocket();
+                }, 8000);
+
             }
 
-            that.queue.push(rawMessage.messageId);
-            that.emit('message', rawMessage);
+        }, timeToChangeBetweenSockets);
 
-            if (that.queue.length > 50) {
-                that.queue.shift();
-            }
-        });
+    }
 
-        this.startOne();
-        let switcher = true;
-
-        setTimeout(function resetSocket() {
-            if (switcher) {
-                that.startTwo();
-                setTimeout(() => {
-                    that.closeOne();
-                    switcher = false;
-                }, 4000);
-            } else {
-                that.startOne();
-                setTimeout(() => {
-                    that.closeTwo();
-                    switcher = true;
-                }, 4000)
-            }
-
-            setTimeout(resetSocket, 480000);
-        }, 480000);
-
-    } */
+    stopListen(){
+        clearInterval(this.loopId);
+    }
 }
 

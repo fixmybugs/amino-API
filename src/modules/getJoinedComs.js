@@ -9,7 +9,7 @@ export default async function getJoinedCommunities({ size = 50, resume = true, h
         throw new Error('All Arguments are not satisfied.');
     }
 
-    let comHeaders = headers;
+    let comHeaders = JSON.parse(JSON.stringify(headers));
 
     try {
 
@@ -17,11 +17,12 @@ export default async function getJoinedCommunities({ size = 50, resume = true, h
             method: 'get',
             headers: comHeaders
         });
-    
+
         const data = await response.json();
         checkForExeptions(data)
-        if(resume){
-            return resumeData({data: data.communityList});
+
+        if (resume) {
+            return resumeData({ data: data.communityList });
         }
         return data.communityList;
 

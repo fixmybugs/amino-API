@@ -3,6 +3,8 @@ import getJoinedCommunities from './modules/getJoinedComs.js';
 import getJoinedChats from './modules/getJoinedChats.js';
 import sendMessage from './modules/sendMessage.js';
 
+import chatListener from './modules/chatListener.js';
+
 class aminoClient {
 
     constructor({email, password}) {
@@ -56,6 +58,16 @@ class aminoClient {
         if(!this.loginStatus) throw new Error('you need to login first');
         await sendMessage({message: message, chatId, communityId, headers: this.headers})
 
+    }
+
+    async startListenMessages(){
+        if(!this.loginStatus) throw new Error('you need to login first');
+
+        let newListener = new chatListener(this.headers);
+        await newListener.startListen();
+        newListener.on("rawMsg", (raw)=>{
+            console.log("raw message here: ", raw);
+        })
     }
 
 }
