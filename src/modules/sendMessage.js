@@ -1,8 +1,7 @@
 import fetch from 'node-fetch';
-import endpoints from './helpers/endpoints.js';
-import signature from './helpers/signature.js'
-import checkForExeptions from './exceptions/checkForExceptions.js';
-import { v4 as uuidv4 } from 'uuid';
+import endpoints from './modulesHelpers/endpoints.js';
+import signature from '../helpers/signature.js'
+import checkForExeptions from './modulesExceptions/checkForExceptions.js';
 
 export default async function sendMessage({
 
@@ -29,15 +28,10 @@ export default async function sendMessage({
         "timestamp": Date.now()
     }
 
-    //sendMessageHeaders["AUID"] = uuidv4(); 
-    //sendMessageHeaders["SMDEVICEID"] = uuidv4();
+
     sendMessageHeaders["NDC-MSG-SIG"] = signature(JSON.stringify(body));
     sendMessageHeaders["Content-Length"] = JSON.stringify(body).length;
-
-
-    //console.log(sendMessageHeaders);
-   // console.log(body);
-
+    
     try {
         
         const response = await fetch(endpoints.sendChat(communityId, chatId), {
@@ -46,7 +40,7 @@ export default async function sendMessage({
             headers: sendMessageHeaders
         });
         const data = await response.json();
-        console.log(data)
+       // console.log(data)
         checkForExeptions(data);
         return data
 

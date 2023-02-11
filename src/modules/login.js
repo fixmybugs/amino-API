@@ -1,10 +1,11 @@
 import fetch from 'node-fetch';
-import endpoints from './helpers/endpoints.js';
-import deviceIdGenerator from './helpers/deviceIdGenerator.js';
-import signature from './helpers/signature.js'
-import configHeaders from './helpers/headers.js';
-import checkForExeptions from './exceptions/checkForExceptions.js';
+import endpoints from './modulesHelpers/endpoints.js';
 
+import configHeaders from './modulesHelpers/headers.js';
+import checkForExeptions from './modulesExceptions/checkForExceptions.js';
+
+import deviceIdGenerator from '../helpers/deviceIdGenerator.js';
+import signature from '../helpers/signature.js';
 
 export default async function login(email, password) {
 
@@ -12,7 +13,7 @@ export default async function login(email, password) {
         throw new Error("email and password must be a string");
     }
 
-    let headers = configHeaders.getHeaders()
+    let headers = configHeaders.getHeaders();
     let loginHeaders = JSON.parse(JSON.stringify(headers)); //just cloning headers object base 
     const __deviceID = deviceIdGenerator();
 

@@ -3,7 +3,6 @@ let prefix = 'https://service.narvii.com/api';
 export default  {
     login: prefix + '/v1/g/s/auth/login',
     getMe: prefix + '/v1/g/s/account',
-    webSocket: (signbody) => `wss://ws1.narvii.com/?signbody=${signbody}`,
     getJoinedComs: (size)=> `${prefix}/v1/g/s/community/joined?start=0&size=${size}`,
     upload: prefix + '/v1/g/s/media/upload',
     linkResolution: (q) => `${prefix}/v1/g/s/link-resolution?q=${q}`,

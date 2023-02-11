@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
-import endpoints from './helpers/endpoints.js';
-import resumeChatListData from './summarizers/joinedChatResume.js';
-import checkForExeptions from './exceptions/checkForExceptions.js';
+import endpoints from './modulesHelpers/endpoints.js';
+import resumeChatListData from './modulesSummarizers/joinedChatResume.js';
+import checkForExeptions from './modulesExceptions/checkForExceptions.js';
 
 export default async function getJoinedChats({ size = 50, communityId, resume = true, headers }) {
 

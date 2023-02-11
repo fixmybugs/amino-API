@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
-import endpoints from './helpers/endpoints.js';
-import resumeData from './summarizers/joinedComsResume.js'
-import checkForExeptions from './exceptions/checkForExceptions.js';
+import endpoints from './modulesHelpers/endpoints.js';
+import resumeData from './modulesSummarizers/joinedComsResume.js'
+import checkForExeptions from './modulesExceptions/checkForExceptions.js';
 
 export default async function getJoinedCommunities({ size = 50, resume = true, headers }) {
 

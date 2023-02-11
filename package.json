@@ -7,8 +7,7 @@
     "test_login": "node tests/test_login.js",
     "test_getComs": "node tests/test_getJoinedCommunities.js",
     "test_getChats": "node tests/test_getJoinedChats.js",
-    "test_sendMsg": "node tests/test_sendMsg.js",
-    "test_ws": "node tests/test_ws.js"
+    "test_sendMsg": "node tests/test_sendMsg.js"
   },
   "type": "module",
   "author": "@fixmybugs",
@@ -18,6 +17,7 @@
     "node-fetch": "^3.3.0",
     "path": "^0.12.7",
     "uuid": "^9.0.0",
+    "websocket": "^1.0.34",
     "ws": "^8.12.0"
   }
 }
