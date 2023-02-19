@@ -1,7 +1,4 @@
-import aminoClient from './src/amino.js';
+import aminoClient from './src/aminoClient.js';
+export default aminoClient;
 
-let amino = {
-    client: aminoClient 
-}
-
-export default amino;
+//🦆🦆🦆🦆🦆🦆🦆 ducks for everyone!!

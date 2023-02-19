@@ -1,5 +1,25 @@
 
-export default function getJoinedChatResume({data}){
+export function summarizeJoinedCommunities(data){
+
+    if(typeof data !== 'object'){
+        throw new Error('data must be an array of objects with amino communities response');
+    }
+
+    let resumeOfCommunities = data.map((element)=> {
+        return {
+            name: element.name,
+            link: element.link,
+            icon: element.icon,
+            communityId: element.ndcId,
+
+        }
+    })
+
+    return resumeOfCommunities;
+}
+
+
+export function summarizeJoinedChats(data){
     
     if(typeof data != 'object'){
         throw new Error('data must be an Array of objects with amino chats data');

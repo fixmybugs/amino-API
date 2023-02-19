@@ -6,17 +6,19 @@ export class messageClass {
         incomingMessageInfo,
     }) {
 
+       
         this.allInfo = incomingMessageInfo.chatMessage;
         this.communityId = incomingMessageInfo.ndcId;
 
-        this.chatId = this.allInfo.threadId;
-        this.Id = this.allInfo.messageId;
-        this.content = this.allInfo.content;
-
-        this.authorInfo = this.allInfo.author;
-        this.authorNickname = this.authorInfo.nickname;
-        
+        let {threadId, messageId, content, author} = this.allInfo; 
+        this.threadId = threadId;
+        this.messageId = messageId;
+        this.content = content;
+        this.author = author;
+        if(this.authorInfo) this.nickname = this.author.nickname;
+         
         this.amino = mainAminoContext;
+        
         this.headers = this.headers = JSON.parse(JSON.stringify(mainAminoContext.headers));
 
     }
@@ -29,7 +31,7 @@ export class messageClass {
         let sendMessageParams = {
 
             message: message,
-            chatId: this.chatId,
+            chatId: this.threadId,
             communityId: this.communityId,
             headers: this.headers
         }
@@ -37,4 +39,9 @@ export class messageClass {
         let response = await this.amino.sendMessage(sendMessageParams);
         return response;
     }
+
+    info(){
+        return this.allInfo;
+    }
+
 }

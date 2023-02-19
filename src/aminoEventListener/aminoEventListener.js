@@ -1,17 +1,19 @@
 import eventEmitter from 'events';
 
 import aminoSocket from "./socket/aminoSocket.js";
-import aminoSocketEventSorter from './eventListenerHelpers/aminoEventSorter.js';
-import { messageClass } from './eventListenerHelpers/aminoMessageClasses.js';
+import aminoSocketEventSorter from './helpers/aminoEventSorter.js';
+import { messageClass } from './helpers/aminoMessageClasses.js';
 
 export default class chatEventListener extends eventEmitter {
-    constructor({amino}) {
+
+    constructor({context}) {
         super();
-        this.amino = amino;
-        this.headers = JSON.parse(JSON.stringify(amino.headers));
+        this.amino = context;
+        this.headers = JSON.parse(JSON.stringify(context.headers));
     }
 
-    async startListenEvents() {
+    async start() {
+        
         let aminoSocketConnection  = new aminoSocket(this.headers);
         aminoSocketConnection.startSocket();
         aminoSocketConnection.on("rawMessage", (messageData)=>{

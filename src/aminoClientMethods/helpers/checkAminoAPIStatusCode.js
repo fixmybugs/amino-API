@@ -1,5 +1,5 @@
 
-export default function checkForExeptions(data){
+export default function checkAminoAPIStatusCode(data){
 
     let code = data['api:statuscode'];
     if(code !== 0){

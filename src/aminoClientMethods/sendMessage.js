@@ -1,24 +1,17 @@
 import fetch from 'node-fetch';
-import endpoints from './modulesHelpers/endpoints.js';
-import signature from '../helpers/signature.js'
-import checkForExeptions from './modulesExceptions/checkForExceptions.js';
+import endpoints from './helpers/endpoints.js';
+import signature from './helpers/signature.js'
+import checkAminoAPIStatusCode from './helpers/checkAminoAPIStatusCode.js';
 
 export default async function sendMessage({
 
     message,
     chatId,
     communityId,
-    attached = false,
     headers
 
 }) {
-
-    if (typeof message !== 'string' || message === "") throw new Error('message must be a string');
-    if (typeof chatId !== 'string') throw new Error('chatId must be a string');
-    if (typeof communityId !== 'number') throw new Error('communityId must be a number');
-    if (typeof attached !== 'boolean') throw new Error('attached must be a boolean');
-    if (!headers) throw new Error('The "headers" parameter is required');
-
+    
     let sendMessageHeaders = JSON.parse(JSON.stringify(headers));
 
     let body = {
@@ -41,7 +34,7 @@ export default async function sendMessage({
         });
         const data = await response.json();
        // console.log(data)
-        checkForExeptions(data);
+        checkAminoAPIStatusCode(data);
         return data
 
     } catch (error) {

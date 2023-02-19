@@ -1,17 +1,14 @@
 import fetch from 'node-fetch';
-import endpoints from './modulesHelpers/endpoints.js';
 
-import configHeaders from './modulesHelpers/headers.js';
-import checkForExeptions from './modulesExceptions/checkForExceptions.js';
+import endpoints from './helpers/endpoints.js';
+import configHeaders from './helpers/headers.js';
+import checkAminoAPIStatusCode from './helpers/checkAminoAPIStatusCode.js';
+import deviceIdGenerator from './helpers/deviceIdGenerator.js';
 
-import deviceIdGenerator from '../helpers/deviceIdGenerator.js';
-import signature from '../helpers/signature.js';
+import signature from './helpers/signature.js';
+
 
 export default async function login(email, password) {
-
-    if(typeof email != 'string' || typeof password != 'string'){
-        throw new Error("email and password must be a string");
-    }
 
     let headers = configHeaders.getHeaders();
     let loginHeaders = JSON.parse(JSON.stringify(headers)); //just cloning headers object base 
@@ -33,17 +30,19 @@ export default async function login(email, password) {
 
     try {
 
-        const response = await fetch(endpoints.login, {
+        let fetchParams = {
             method: 'post',
             body: JSON.stringify(body),
             headers: loginHeaders
-        });
+        }
 
+        const response = await fetch(endpoints.login, fetchParams);
         const data = await response.json();
-        checkForExeptions(data);
+        checkAminoAPIStatusCode(data);
+
         headers["NDCAUTH"] = `sid=${data.sid}`
         headers["NDCDEVICEID"] = __deviceID;
-        //console.log(data);
+
         return {
             headers: headers,
             accountData: data,

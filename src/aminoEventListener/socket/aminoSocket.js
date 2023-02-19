@@ -1,7 +1,7 @@
 import WebSocket from 'ws';
 import eventEmitter from 'events';
-import socketEndpoints from '../../eventListener/socket/socketHelpers/aminoSocketEndpoints.js';
-import signature from '../../helpers/signature.js';
+import socketEndpoints from './socketHelpers/aminoSocketEndpoints.js';
+import signature from './socketHelpers/signature.js';
 
 
 import { randomInt } from './socketHelpers/aminoSocketHelpers.js';
