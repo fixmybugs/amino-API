@@ -64,6 +64,7 @@ export default class aminoSocket extends eventEmitter {
             this.webSocket.on("message", (msg) => {
 
                 let message = JSON.parse(msg);
+              //  console.log(message);
                 if (message.t !== 1000) return;
 
                 let messageData = message.o;
@@ -80,6 +81,14 @@ export default class aminoSocket extends eventEmitter {
 
     }
 
+
+    send(data){
+
+        console.log(this.webSocket.OPEN)
+        /*let stringData = JSON.stringify(data)
+        this.webSocket.send(stringData);
+*/
+    }
     closeWebSocket() {
         this.webSocket.terminate();
         this.stopHeartbeatSender();

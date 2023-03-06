@@ -6,26 +6,35 @@ import { messageClass } from './helpers/aminoMessageClasses.js';
 
 export default class chatEventListener extends eventEmitter {
 
-    constructor({context}) {
+    constructor({ context }) {
         super();
         this.amino = context;
         this.headers = JSON.parse(JSON.stringify(context.headers));
+        this.aminoSocketConnection;
+
     }
 
-    async start() {
-        
-        let aminoSocketConnection  = new aminoSocket(this.headers);
-        aminoSocketConnection.startSocket();
-        aminoSocketConnection.on("rawMessage", (messageData)=>{
+    start() {
+
+        this.aminoSocketConnection = new aminoSocket(this.headers);
+        this.aminoSocketConnection.startSocket();
+        this.aminoSocketConnection.on("rawMessage", (messageData) => {
 
             let messageClassParams = {
                 mainAminoContext: this.amino,
                 incomingMessageInfo: messageData
             }
+
             let eventType = aminoSocketEventSorter(messageData);
 
             this.emit(eventType, new messageClass(messageClassParams));
         })
     }
 
+    send(data){
+        
+        this.aminoSocketConnection.send(data);
+    }
+
 } 
+

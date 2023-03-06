@@ -10,7 +10,7 @@ export function summarizeJoinedCommunities(data){
             name: element.name,
             link: element.link,
             icon: element.icon,
-            communityId: element.ndcId,
+            ndcId: element.ndcId,
 
         }
     })
@@ -28,6 +28,7 @@ export function summarizeJoinedChats(data){
     let resumeOfChats = data.map((chat)=>{
 
         let typeOfChat = {
+            
             0: 'DM',
             1: 'private',
             2: 'public'

@@ -20,8 +20,9 @@ export default async function getJoinedChats({ size = 50, communityId, resume = 
         const data = await response.json();
         checkAminoAPIStatusCode(data);
 
-        if (resume) return summarizeJoinedChats(data.threadList);
-        return data.threadList;
+        let dataSummary = summarizeJoinedChats(data.threadList);
+        if (resume) return Object.freeze(dataSummary);
+        return Object.freeze(data.threadList);
 
     } catch (error) {
         throw new Error(`something bad happened => ${error}`)

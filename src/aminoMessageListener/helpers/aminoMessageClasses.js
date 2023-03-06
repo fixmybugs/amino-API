@@ -18,7 +18,6 @@ export class messageClass {
         if(this.authorInfo) this.nickname = this.author.nickname;
          
         this.amino = mainAminoContext;
-        
         this.headers = this.headers = JSON.parse(JSON.stringify(mainAminoContext.headers));
 
     }
@@ -26,7 +25,7 @@ export class messageClass {
 
     async reply(message) {
 
-        if (typeof message != 'string') throw new Error("Message must be a non-empty string");
+        if (typeof message != 'string') return console.log("Message must be a non-empty string");
 
         let sendMessageParams = {
 

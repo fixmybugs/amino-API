@@ -43,10 +43,10 @@ export default async function login(email, password) {
         headers["NDCAUTH"] = `sid=${data.sid}`
         headers["NDCDEVICEID"] = __deviceID;
 
-        return {
+        return Object.freeze({
             headers: headers,
             accountData: data,
-        }
+        })
 
     } catch (error) {
         console.error("vete alv something bad happen !!", error);

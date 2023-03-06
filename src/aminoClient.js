@@ -3,16 +3,15 @@ import getJoinedCommunities from './aminoClientMethods/getJoinedComs.js';
 import getJoinedChats from './aminoClientMethods/getJoinedChats.js';
 import sendMessage from './aminoClientMethods/sendMessage.js';
 
-import aminoEventListener from './aminoEventListener/aminoEventListener.js';
+import aminoMessageListener from './aminoMessageListener/aminoMessageListener.js';
 
 //helpers
 import validateParams from './aminoClientHelpers/paramsValidate.js';
 import checkIfLoggedIn from './aminoClientHelpers/checkIfLoggedIn.js';
 
-class aminoClient {
+class aminoClient{
 
     constructor() {
-
         this.loginStatus;
         this.headers;
         this.myAccountInfo;
@@ -135,13 +134,14 @@ class aminoClient {
         let data = await sendMessage({ message: message, chatId, communityId, headers: this.headers })
         return data;
     }
+ 
+    createMessageListener(){
 
-    newEventListener() {
+        return new aminoMessageListener({context: this});
 
-        checkIfLoggedIn(this.loginStatus);
-        
-        return new aminoEventListener({ context: this });
     }
+
+
 
 }
 

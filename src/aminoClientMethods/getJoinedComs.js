@@ -19,8 +19,9 @@ export default async function getJoinedCommunities({ size = 50, resume = true, h
         const data = await response.json();
         checkAminoAPIStatusCode(data);
 
-        if (resume) return summarizeJoinedCommunities(data.communityList);
-        return data.communityList;
+        let dataSummary = summarizeJoinedCommunities(data.communityList);
+        if (resume) return Object.freeze(dataSummary);
+        return Object.freeze(data.communityList);
 
     } catch (error) {
         throw new Error(`something bad happened => ${error}`);
