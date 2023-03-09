@@ -1,9 +1,9 @@
 import fetch from 'node-fetch';
 import endpoints from './helpers/endpoints.js';
-import { summarizeJoinedCommunities } from './helpers/summarizers.js';
-import checkAminoAPIStatusCode from './helpers/checkAminoAPIStatusCode.js';
+import { sortJoinedCommunities } from './helpers/sorters.js';
+import checkResponseStatus from './helpers/checkResponseStatus.js';
 
-export default async function getJoinedCommunities({ size = 50, resume = true, headers }) {
+export default async function getJoinedCommunities({ size = 50, headers }) {
 
     let getJoinedComsHeaders = JSON.parse(JSON.stringify(headers));
 
@@ -17,11 +17,18 @@ export default async function getJoinedCommunities({ size = 50, resume = true, h
 
         const response = await fetch(endpoint, fetchParams);
         const data = await response.json();
-        checkAminoAPIStatusCode(data);
+        let {success, APIMessage} = checkResponseStatus(data);
+        if(!success) return Object.freeze({
+            data: null,
+            success: success,
+            errorMessage: APIMessage
+        })
 
-        let dataSummary = summarizeJoinedCommunities(data.communityList);
-        if (resume) return Object.freeze(dataSummary);
-        return Object.freeze(data.communityList);
+        return Object.freeze({
+            data: data.communityList,
+            success: true,
+            errorMessage: APIMessage
+        });
 
     } catch (error) {
         throw new Error(`something bad happened => ${error}`);

@@ -1,6 +1,7 @@
 import eventEmitter from 'events';
 
 import aminoSocket from "./socket/aminoSocket.js";
+
 import aminoSocketEventSorter from './helpers/aminoEventSorter.js';
 import { messageClass } from './helpers/aminoMessageClasses.js';
 
@@ -32,7 +33,6 @@ export default class chatEventListener extends eventEmitter {
     }
 
     send(data){
-        
         this.aminoSocketConnection.send(data);
     }
 

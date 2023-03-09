@@ -50,7 +50,8 @@ export default class aminoSocket extends eventEmitter {
         try {
 
             const SOCKETVERSION = randomInt({ min: 1, max: 4 });
-            this.webSocket = new WebSocket(socketEndpoints.webSocket(finalSignBody, SOCKETVERSION), {
+            let socketEndpoint = socketEndpoints.webSocket(finalSignBody, SOCKETVERSION);
+            this.webSocket = new WebSocket(socketEndpoint, {
                 headers: this.headers
             });
 
@@ -64,11 +65,8 @@ export default class aminoSocket extends eventEmitter {
             this.webSocket.on("message", (msg) => {
 
                 let message = JSON.parse(msg);
-              //  console.log(message);
                 if (message.t !== 1000) return;
-
                 let messageData = message.o;
-                
                 this.emit("rawMessage", messageData);
                 
             });
@@ -81,13 +79,9 @@ export default class aminoSocket extends eventEmitter {
 
     }
 
-
     send(data){
 
-        console.log(this.webSocket.OPEN)
-        /*let stringData = JSON.stringify(data)
-        this.webSocket.send(stringData);
-*/
+        this.webSocket.send(data);
     }
     closeWebSocket() {
         this.webSocket.terminate();

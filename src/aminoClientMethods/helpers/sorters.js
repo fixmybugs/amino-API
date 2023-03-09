@@ -1,5 +1,5 @@
 
-export function summarizeJoinedCommunities(data){
+export function sortJoinedCommunities(data){
 
     if(typeof data !== 'object'){
         throw new Error('data must be an array of objects with amino communities response');
@@ -19,7 +19,7 @@ export function summarizeJoinedCommunities(data){
 }
 
 
-export function summarizeJoinedChats(data){
+export function sortJoinedChats(data){
     
     if(typeof data != 'object'){
         throw new Error('data must be an Array of objects with amino chats data');

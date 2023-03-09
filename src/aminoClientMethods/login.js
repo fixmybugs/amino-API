@@ -1,10 +1,10 @@
 import fetch from 'node-fetch';
 
+//helpers
 import endpoints from './helpers/endpoints.js';
 import configHeaders from './helpers/headers.js';
-import checkAminoAPIStatusCode from './helpers/checkAminoAPIStatusCode.js';
+import checkResponseStatus from './helpers/checkResponseStatus.js';
 import deviceIdGenerator from './helpers/deviceIdGenerator.js';
-
 import signature from './helpers/signature.js';
 
 
@@ -36,20 +36,29 @@ export default async function login(email, password) {
             headers: loginHeaders
         }
 
-        const response = await fetch(endpoints.login, fetchParams);
+        const response = await fetch(endpoints.login, fetchParams); 
         const data = await response.json();
-        checkAminoAPIStatusCode(data);
+        
+        let {success, APIMessage } = checkResponseStatus(data);
 
+        if(!success) return Object.freeze({
+            data: null,
+            success: false,
+            errorMessage: APIMessage
+        })
+        
         headers["NDCAUTH"] = `sid=${data.sid}`
         headers["NDCDEVICEID"] = __deviceID;
 
         return Object.freeze({
             headers: headers,
-            accountData: data,
+            data: data,
+            success: true,
+            errorMessage: null
         })
 
     } catch (error) {
-        console.error("vete alv something bad happen !!", error);
+        console.error("something bad happen !!", error);
     }
 
 }

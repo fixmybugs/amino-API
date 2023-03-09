@@ -33,15 +33,18 @@ class aminoClient{
         }
         validateParams(paramConfig);
 
-        let { headers, data } = await login(email, password);
+        let { headers, data, success, errorMessage } = await login(email, password);
+        if(!success) return errorMessage
+
         this.headers = headers;
         this.myAccountInfo = data;
         this.loginStatus = true;
 
-        return this.loginStatus;
+        return data;
     }
 
-    async getJoinedCommunities({ size, resume }) {
+    async getJoinedCommunities({ size }) {
+
         checkIfLoggedIn(this.loginStatus);
 
         let paramConfig = {
@@ -50,65 +53,52 @@ class aminoClient{
                 required: false,
                 value: size
             },
-            "resume":{
-                expectedType: "boolean",
-                required: false,
-                value: resume
-            }
         }
-
         validateParams(paramConfig);
     
-
-
         let getCommunitiesParams = {
             size: size,
-            resume: resume,
             headers: this.headers
         }
 
-        let communities = await getJoinedCommunities(getCommunitiesParams);
-        return communities;
+        let {data, success, errorMessage} = await getJoinedCommunities(getCommunitiesParams);
+        if(!success) return errorMessage
+        return data;
     }
 
-    async getJoinedChats({ size, resume, communityId }) {
+    async getJoinedChats({ size, communityId }) {
         
         checkIfLoggedIn(this.loginStatus);
 
         let paramConfig = {
+
             "size": {
                 expectedType: "number",
                 required: false,
                 value: size
             },
-            "resume": {
-                expectedType: "boolean",
-                required: false,
-                value: resume
-            },
-
             "communityId":{
                 expectedType: "number",
                 required: true,
                 value: communityId
             }
         }
-
         validateParams(paramConfig);
 
         let getJoinedChatsParams = {
 
             communityId: communityId,
             size: size,
-            resume: resume,
             headers: this.headers
         }
 
-        let response = await getJoinedChats(getJoinedChatsParams);
-        return response;
+        let {data, success, errorMessage} = await getJoinedChats(getJoinedChatsParams);
+        if(!success) return errorMessage;
+        return data;
     }
 
     async sendMessage({ message, chatId, communityId }) {
+
         checkIfLoggedIn(this.loginStatus);
 
         let paramConfig = {
@@ -128,10 +118,62 @@ class aminoClient{
                 value: communityId
             }
         }
-
         validateParams(paramConfig);
 
-        let data = await sendMessage({ message: message, chatId, communityId, headers: this.headers })
+        let sendMessageParams = {
+
+            message: message,
+            chatId: chatId,
+            communityId: communityId,
+            headers: this.headers
+        }
+
+        let {data, success, errorMessage} = await sendMessage(sendMessageParams);
+        if(!success) return errorMessage;
+        return data;
+    }
+
+    async replyToMessage({message, chatId, communityId, replyTo}){
+
+        checkIfLoggedIn(this.loginStatus);
+
+        let paramConfig = {
+            "message": {
+                expectedType: "string",
+                required: true,
+                value: message,
+            },
+            "chatId": {
+                expectedType: "string",
+                required: true,
+                value: chatId
+            },
+            "communityId": {
+                expectedType: "number",
+                required: true,
+                value: communityId
+            },
+
+            "replyTo": {
+                expectedType: "string",
+                required: true,
+                value: replyTo,
+            }
+
+        }
+        validateParams(paramConfig);
+
+        let sendMessageParams = {
+
+            message: message,
+            chatId: chatId,
+            communityId: communityId,
+            replyTo: replyTo,
+            headers: this.headers
+        }
+
+        let {data, success, errorMessage} = await sendMessage(sendMessageParams);
+        if(!success) return errorMessage;
         return data;
     }
  

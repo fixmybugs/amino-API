@@ -7,10 +7,10 @@ export class messageClass {
     }) {
 
        
-        this.allInfo = incomingMessageInfo.chatMessage;
+        this.info = incomingMessageInfo.chatMessage;
         this.communityId = incomingMessageInfo.ndcId;
 
-        let {threadId, messageId, content, author} = this.allInfo; 
+        let {threadId, messageId, content, author} = this.info; 
         this.threadId = threadId;
         this.messageId = messageId;
         this.content = content;
@@ -25,22 +25,16 @@ export class messageClass {
 
     async reply(message) {
 
-        if (typeof message != 'string') return console.log("Message must be a non-empty string");
-
         let sendMessageParams = {
-
             message: message,
             chatId: this.threadId,
             communityId: this.communityId,
+            replyTo: this.messageId,
             headers: this.headers
         }
 
-        let response = await this.amino.sendMessage(sendMessageParams);
+        let response = await this.amino.replyToMessage(sendMessageParams);
         return response;
-    }
-
-    info(){
-        return this.allInfo;
     }
 
 }

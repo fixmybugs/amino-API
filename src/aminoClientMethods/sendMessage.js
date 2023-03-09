@@ -1,17 +1,16 @@
 import fetch from 'node-fetch';
 import endpoints from './helpers/endpoints.js';
-import signature from './helpers/signature.js'
-import checkAminoAPIStatusCode from './helpers/checkAminoAPIStatusCode.js';
+import signature from './helpers/signature.js';
+import checkResponseStatus from './helpers/checkResponseStatus.js';
 
 export default async function sendMessage({
-
     message,
     chatId,
     communityId,
+    replyTo,
     headers
-
 }) {
-    
+
     let sendMessageHeaders = JSON.parse(JSON.stringify(headers));
 
     let body = {
@@ -21,21 +20,35 @@ export default async function sendMessage({
         "timestamp": Date.now()
     }
 
+    if(replyTo) body["replyMessageId"] = replyTo;
 
     sendMessageHeaders["NDC-MSG-SIG"] = signature(JSON.stringify(body));
     sendMessageHeaders["Content-Length"] = JSON.stringify(body).length;
     
     try {
         
-        const response = await fetch(endpoints.sendChat(communityId, chatId), {
+        let endpoint  = endpoints.sendChat(communityId, chatId);
+        let fetchParams = {
             method: 'post',
             body: JSON.stringify(body),
             headers: sendMessageHeaders
-        });
+        };
+        const response = await fetch(endpoint, fetchParams);
         const data = await response.json();
-       // console.log(data)
-        checkAminoAPIStatusCode(data);
-        return data
+
+        let {success, APIMessage} = checkResponseStatus(data)
+        
+        if(!success) return Object.freeze({
+            data: null,
+            success: success,
+            errorMessage: APIMessage
+        })
+
+        return Object.freeze({
+            data: data,
+            success: true,
+            errorMessage: null
+        });
 
     } catch (error) {
         console.error("vete alv something bad happen !!", error);
